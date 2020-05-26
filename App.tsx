@@ -27,7 +27,7 @@ declare const global: {HermesInternal: null | {}};
 
 interface BtnProps {
   text: string,
-  onPress: any
+  onPress: (n: any) => any
 }
 
 const Btn = (props: BtnProps) => {
