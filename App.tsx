@@ -16,8 +16,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {RModalConfig} from './src/util';
-import RModal, { RModalParent, } from './src';
+import {RModalConfig} from './libs/util';
+import RModal, { RModalParent, } from './libs';
 
 declare const global: {HermesInternal: null | {}};
 
