@@ -37,8 +37,6 @@ export namespace RModalConfig {
     duration: number = defaultDuration,
     callBack?: Callback,
   ): void {
-    console.warn('duration', duration);
-    console.warn(11, view);
     modalHandler && modalHandler.destroy();
     onClose && onClose();
     modalHandler = view;
@@ -50,8 +48,6 @@ export namespace RModalConfig {
         onClose = undefined;
         modalHandler = undefined;
       }, Math.abs(duration));
-    } else {
-      console.warn('duration', duration);
     }
   }
 
@@ -63,3 +59,4 @@ export namespace RModalConfig {
     modalHandler && modalHandler.destroy();
   }
 }
+

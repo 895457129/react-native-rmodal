@@ -8,7 +8,7 @@
  * @format
  */
 
-import React from 'react';
+import React, { useState, } from 'react';
 import {
   StyleSheet,
   Text,
@@ -16,10 +16,13 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {RModalConfig} from './libs/util';
-import RModal, { RModalParent, } from './libs';
+// import RModal, { RModalParent} from "react-native-rmodal";
+// import { RModalConfig } from "react-native-rmodal/libs/util"
 
-declare const global: {HermesInternal: null | {}};
+// import {RModalConfig} from './libs/util';
+// import RModal, { RModalParent, } from './libs';
+
+import RModal, { RModalParent, RModalConfig, } from './src';
 
 interface BtnProps {
   text: string;
@@ -35,9 +38,12 @@ const Btn = (props: BtnProps) => {
 };
 
 const App = () => {
+  const [duration, setDuration] = useState(2000);
 
   const setDefaultTime = () => {
-    RModalConfig.setDefaultDuration(5000);
+    const t = duration === 2000 ? 5000 : 2000;
+    setDuration(t);
+    RModalConfig.setDefaultDuration(t);
   };
 
 
@@ -45,7 +51,7 @@ const App = () => {
     RModal.info(
       '这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题',
       2000,
-      () => console.warn('close modal 1'),
+      () => console.log('close modal 1'),
     );
   };
 
@@ -53,7 +59,7 @@ const App = () => {
     RModal.fail(
       '网络错误！',
       0,
-      () => console.warn('close modal'),
+      () => console.log('close modal'),
     );
     setTimeout(() => {
       RModalConfig.hide();
@@ -74,10 +80,10 @@ const App = () => {
   return (
     <RModalParent>
       <View>
-        <Btn text="设置弹窗时间为5秒" onPress={setDefaultTime} />
+        <Btn text={`设置弹窗时间为${duration === 2000 ? 5000 : 2000 }ms`} onPress={setDefaultTime} />
         <Btn text="显示信息" onPress={showInfo} />
         <Btn text="显示错误信息" onPress={showFail} />
-        <Btn text="显示成功信息" onPress={showSuccess} />
+        <Btn text={`显示成功信息${duration}ms后消失`} onPress={showSuccess} />
         <Btn text="显示加载中..." onPress={showLoading} />
       </View>
     </RModalParent>
@@ -92,7 +98,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20,
+    marginTop: 20,
   },
   btn_text: {
     color: '#fff',
