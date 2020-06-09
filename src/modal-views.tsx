@@ -1,27 +1,35 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image, ActivityIndicator} from 'react-native';
+import { RModalConfig, } from "./util";
 
-const failImg = require('./images/fail.png');
-const successImg = require('./images/success.png');
+const defaultFailImg = require('./images/fail.png');
+const defaultSuccessImg = require('./images/success.png');
 
 interface ViewProps {
   text: string;
 }
 
 export function InfoView(props: ViewProps) {
+  const diyStyle  = RModalConfig.getModalStyle();
   return (
-    <View style={styles.rView_bg}>
-      <Text style={styles.rView_text}>{props.text}</Text>
+    <View style={[styles.rModal_info_bg, diyStyle.rModal_info_bg]}>
+      <Text style={[styles.rModal_info_text, diyStyle.rModal_info_text]}>{props.text}</Text>
     </View>
   );
 }
 
 export function FailView(props: ViewProps) {
+  const diyStyle  = RModalConfig.getModalStyle();
+  const failImg = RModalConfig.getImages().failImg;
   return (
-    <View style={styles.rView_bg}>
-      <View style={styles.rView_fail_container}>
-        <Image source={failImg} style={styles.rView_fail_img} />
-        <Text style={styles.rView_fail_text} numberOfLines={1}>
+    <View style={[styles.rModal_fail_bg, diyStyle.rModal_fail_bg]}>
+      <View style={[styles.rModal_fail_container, diyStyle.rModal_fail_container]}>
+        {
+          React.isValidElement(failImg) ? failImg : (
+            <Image source={failImg || defaultFailImg} style={[styles.rModal_fail_img, diyStyle.rModal_fail_img]} />
+          )
+        }
+        <Text style={[styles.rModal_fail_text, diyStyle.rModal_fail_text]} numberOfLines={1}>
           {props.text}
         </Text>
       </View>
@@ -30,11 +38,17 @@ export function FailView(props: ViewProps) {
 }
 
 export function SuccessView(props: ViewProps) {
+  const diyStyle  = RModalConfig.getModalStyle();
+  const successImg = RModalConfig.getImages().successImg;
   return (
-    <View style={styles.rView_bg}>
-      <View style={styles.rView_success_container}>
-        <Image source={successImg} style={styles.rView_success_img} />
-        <Text style={styles.rView_success_text} numberOfLines={1}>
+    <View style={[styles.rModal_success_bg, diyStyle.rModal_success_bg]}>
+      <View style={[styles.rModal_success_container, diyStyle.rModal_success_container]}>
+        {
+          React.isValidElement(successImg) ? successImg : (
+            <Image source={successImg || defaultSuccessImg} style={[styles.rModal_success_img, diyStyle.rModal_success_img]} />
+          )
+        }
+        <Text style={[styles.rModal_success_text, diyStyle.rModal_success_text]} numberOfLines={1}>
           {props.text}
         </Text>
       </View>
@@ -43,15 +57,21 @@ export function SuccessView(props: ViewProps) {
 }
 
 export function LoadingView() {
+  const diyStyle  = RModalConfig.getModalStyle();
+  const loadingImg = RModalConfig.getImages().loadingImg;
   return (
-    <View style={styles.rView_bg}>
-      <View style={styles.rView_loading_container}>
-        <ActivityIndicator
-          style={styles.rView_loading_img}
-          size="large"
-          color="#fff"
-        />
-        <Text style={styles.rView_loading_text} numberOfLines={1}>
+    <View style={[styles.rModal_loading_bg, diyStyle.rModal_loading_bg]}>
+      <View style={[styles.rModal_loading_container, diyStyle.rModal_loading_container]}>
+        {
+          React.isValidElement(loadingImg) ? loadingImg : (
+            <ActivityIndicator
+              style={[styles.rModal_loading_img, diyStyle.rModal_loading_img]}
+              size="large"
+              color="#fff"
+            />
+          )
+        }
+        <Text style={[styles.rModal_loading_text, diyStyle.rModal_loading_text]} numberOfLines={1}>
           加载中...
         </Text>
       </View>
@@ -60,7 +80,7 @@ export function LoadingView() {
 }
 
 const styles = StyleSheet.create({
-  rView_bg: {
+  rModal_info_bg: {
     backgroundColor: 'transparent',
     position: 'absolute',
     top: 0,
@@ -70,8 +90,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
+    zIndex: 100,
   },
-  rView_text: {
+  rModal_info_text: {
     color: '#fff',
     backgroundColor: 'rgba(0,0,0,0.75)',
     fontSize: 16,
@@ -82,7 +103,19 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     maxWidth: '80%',
   },
-  rView_fail_container: {
+  rModal_fail_bg: {
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 100,
+  },
+  rModal_fail_container: {
     backgroundColor: 'rgba(0,0,0,0.75)',
     paddingLeft: 20,
     paddingRight: 20,
@@ -93,16 +126,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  rView_fail_img: {
+  rModal_fail_img: {
     width: 30,
     height: 30,
     marginBottom: 6,
   },
-  rView_fail_text: {
+  rModal_fail_text: {
     fontSize: 14,
     color: '#fff',
   },
-  rView_success_container: {
+  rModal_success_bg: {
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 100,
+  },
+  rModal_success_container: {
     backgroundColor: 'rgba(0,0,0,0.75)',
     paddingLeft: 20,
     paddingRight: 20,
@@ -113,16 +158,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  rView_success_img: {
+  rModal_success_img: {
     width: 30,
     height: 30,
     marginBottom: 6,
   },
-  rView_success_text: {
+  rModal_success_text: {
     fontSize: 14,
     color: '#fff',
   },
-  rView_loading_container: {
+  rModal_loading_bg: {
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 100,
+  },
+  rModal_loading_container: {
     backgroundColor: 'rgba(0,0,0,0.75)',
     paddingLeft: 20,
     paddingRight: 20,
@@ -133,12 +190,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  rView_loading_img: {
+  rModal_loading_img: {
     width: 30,
     height: 30,
     marginBottom: 6,
   },
-  rView_loading_text: {
+  rModal_loading_text: {
     fontSize: 14,
     color: '#fff',
   },

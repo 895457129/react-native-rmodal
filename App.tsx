@@ -13,7 +13,7 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
+  TouchableOpacity, Image,
 } from 'react-native';
 
 // import RModal, { RModalParent} from "react-native-rmodal";
@@ -77,6 +77,17 @@ const App = () => {
     }, 2000);
   };
 
+  const changeTheme = () => {
+    RModalConfig.setModalStyle(themeStyle);
+  };
+
+  const changeIcon = () => {
+    RModalConfig.setImages({
+      // failImg: require('./src/images/success.png'),
+      failImg: <Image style={{width: 40, height: 40,}} source={require('./src/images/success.png')} />,
+    });
+  };
+
   return (
     <RModalParent>
       <View>
@@ -85,6 +96,9 @@ const App = () => {
         <Btn text="显示错误信息" onPress={showFail} />
         <Btn text={`显示成功信息${duration}ms后消失`} onPress={showSuccess} />
         <Btn text="显示加载中..." onPress={showLoading} />
+        <Btn text="修改主题" onPress={changeTheme} />
+        <Btn text="修改错误信息的图标" onPress={changeIcon} />
+        <Btn text="还原设置" onPress={RModalConfig.resetSetting} />
       </View>
     </RModalParent>
   );
@@ -103,6 +117,21 @@ const styles = StyleSheet.create({
   btn_text: {
     color: '#fff',
     fontSize: 16,
+  },
+});
+
+const themeStyle = StyleSheet.create({
+  rModal_info_text: {
+    color: 'blue',
+  },
+  rModal_fail_text: {
+    color: 'blue',
+  },
+  rModal_success_text: {
+    color: 'blue',
+  },
+  rModal_loading_text: {
+    color: 'blue',
   },
 });
 
