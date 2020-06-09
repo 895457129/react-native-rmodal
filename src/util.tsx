@@ -21,6 +21,23 @@ interface ModalStyle {
   rModal_loading_container?: StyleProp<{}>,
   rModal_loading_img?: StyleProp<{}>,
   rModal_loading_text?: StyleProp<{}>,
+  rModal_actionSheet_bg?: StyleProp<{}>,
+  rModal_actionSheet_container?: StyleProp<{}>,
+  rModal_actionSheet_title?: StyleProp<{}>,
+  rModal_actionSheet_title_text?: StyleProp<{}>,
+  rModal_actionSheet_item?: StyleProp<{}>,
+  rModal_actionSheet_item_text?: StyleProp<{}>,
+  rModal_actionSheet_cancel?: StyleProp<{}>,
+  rModal_actionSheet_cancel_text?: StyleProp<{}>,
+  rModal_confirm_bg?: StyleProp<{}>,
+  rModal_confirm_container?: StyleProp<{}>,
+  rModal_confirm_titleBox?: StyleProp<{}>,
+  rModal_confirm_titleBox_title?: StyleProp<{}>,
+  rModal_confirm_btnBox?: StyleProp<{}>,
+  rModal_confirm_btn_cancel?: StyleProp<{}>,
+  rModal_confirm_btn_cancel_text?: StyleProp<{}>,
+  rModal_confirm_btn_ok?: StyleProp<{}>,
+  rModal_confirm_btn_ok_text?: StyleProp<{}>,
 }
 
 interface ImageProps {
@@ -40,6 +57,8 @@ export namespace RModalConfig {
   let modalStyle: ModalStyle;
   // 弹窗相关图片
   let ImageProps: ImageProps;
+  // modalStyle缓存
+  let modalStyleStack: Array<ModalStyle> = [];
 
   /**
    * 设置modal默认显示时间
@@ -94,6 +113,12 @@ export namespace RModalConfig {
 
   export function setModalStyle(style: ModalStyle) {
     modalStyle = style;
+    modalStyleStack.push(style);
+  }
+
+  export function popModalStyle() {
+    modalStyleStack.pop();
+    modalStyle = modalStyleStack[modalStyleStack.length - 1] || {};
   }
 
   export function getModalStyle() {
@@ -115,6 +140,5 @@ export namespace RModalConfig {
     modalStyle = {};
     ImageProps = {};
   }
-
 }
 
