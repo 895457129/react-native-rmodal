@@ -22,8 +22,15 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity,
+  TouchableOpacity, Image,
 } from 'react-native';
+
+// import RModal, { RModalParent} from "react-native-rmodal";
+// import { RModalConfig } from "react-native-rmodal/libs/util"
+
+// import {RModalConfig} from './libs/util';
+// import RModal, { RModalParent, } from './libs';
+
 import RModal, { RModalParent, RModalConfig, } from './src';
 
 interface BtnProps {
@@ -79,6 +86,60 @@ const App = () => {
     }, 2000);
   };
 
+  const changeTheme = () => {
+    const colors = ['red', 'yellow', 'green', 'blue'];
+    const max = 3, min = 0;
+    const index = parseInt(`${Math.random()*(max-min+1)+min}`,10);
+    const color = colors[index];
+    RModalConfig.setModalStyle(StyleSheet.create({
+      rModal_info_text: {
+        color,
+      },
+      rModal_fail_text: {
+        color,
+      },
+      rModal_success_text: {
+        color,
+      },
+      rModal_loading_text: {
+        color,
+      },
+      rModal_actionSheet_cancel_text: {
+        color,
+      },
+      rModal_confirm_btn_ok_text: {
+        color,
+      },
+    }));
+  };
+
+  const changeIcon = () => {
+    RModalConfig.setImages({
+      // failImg: require('./src/images/success.png'),
+      failImg: <Image style={{width: 40, height: 40,}} source={require('./src/images/success.png')} />,
+    });
+  };
+
+  const showActionSheet = () => {
+    RModal.actionSheet({
+      items: ['角色1', '角色2'],
+      onCancel: () => console.warn("点击取消"),
+      cancelText: "Cancel",
+      titleText: "选择角色",
+      onItemClick: (text) => {
+        console.warn("index", text);
+      },
+    })
+  };
+
+  const showConfirm = () => {
+    RModal.confirm({
+      title: "请确认是否删除?",
+      onOk: () => console.warn("点击确认"),
+      onCancel: () => {},
+    })
+  };
+
   return (
     <RModalParent>
       <View>
@@ -87,6 +148,12 @@ const App = () => {
         <Btn text="显示错误信息" onPress={showFail} />
         <Btn text={`显示成功信息${duration}ms后消失`} onPress={showSuccess} />
         <Btn text="显示加载中..." onPress={showLoading} />
+        <Btn text="修改主题" onPress={changeTheme} />
+        <Btn text="还原到上一次主题" onPress={RModalConfig.popModalStyle} />
+        <Btn text="修改错误信息的图标" onPress={changeIcon} />
+        <Btn text="重制设置" onPress={RModalConfig.resetSetting} />
+        <Btn text="Action Sheet" onPress={showActionSheet} />
+        <Btn text="Confirm" onPress={showConfirm} />
       </View>
     </RModalParent>
   );
@@ -107,6 +174,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
 
 export default App;
 
