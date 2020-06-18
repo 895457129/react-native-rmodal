@@ -1,5 +1,5 @@
 import React from 'react';
-import {ImageComponent, StyleProp} from 'react-native';
+import {StyleProp} from 'react-native';
 import RootSiblings from 'react-native-root-siblings';
 
 interface Callback {
@@ -48,7 +48,7 @@ interface ImageProps {
 
 export namespace RModalConfig {
   // 默认显示时间， 当设置为0的时候需要手动关闭
-  let defaultDuration: number = 2000;
+  let defaultDuration: number = 3000;
   // 挡墙弹窗具柄
   let modalHandler: RootSiblings | undefined;
   // 关闭回调
@@ -94,12 +94,7 @@ export namespace RModalConfig {
     modalHandler = view;
     onClose = callBack;
     if (duration !== 0) {
-      setTimeout(() => {
-        modalHandler && modalHandler.destroy();
-        onClose && onClose();
-        onClose = undefined;
-        modalHandler = undefined;
-      }, Math.abs(duration));
+      setTimeout(hide, Math.abs(duration));
     }
   }
 
@@ -109,6 +104,9 @@ export namespace RModalConfig {
    */
   export function hide(): void {
     modalHandler && modalHandler.destroy();
+    onClose && onClose();
+    onClose = undefined;
+    modalHandler = undefined;
   }
 
   export function setModalStyle(style: ModalStyle) {
@@ -134,7 +132,7 @@ export namespace RModalConfig {
   }
 
   export function resetSetting() {
-    defaultDuration = 2000;
+    defaultDuration = 3000;
     modalHandler = undefined;
     onClose = () => {};
     modalStyle = {};

@@ -8,7 +8,6 @@ interface Callback {
   (): void;
 }
 
-
 interface ActionSheetProps {
   items: Array<string>,
   titleText?: string,
@@ -26,6 +25,8 @@ interface ConfirmViewProps {
 }
 
 export default class RModal {
+  static hide = RModalConfig.hide;
+
   static info(desc: string, duration?: number, callBack?: Callback): void {
     const view = new RootSiblings(<InfoView text={desc} />);
     RModalConfig.setModalHandler(view, duration, callBack);
@@ -44,6 +45,11 @@ export default class RModal {
   static loading(): void {
     const view = new RootSiblings(<LoadingView />);
     RModalConfig.setModalHandler(view, 0);
+  }
+
+  static custom(Component: React.ReactElement, duration?: number, callBack?: Callback): void {
+    const view = new RootSiblings(Component);
+    RModalConfig.setModalHandler(view, duration, callBack);
   }
 
   static actionSheet(props: ActionSheetProps): void {

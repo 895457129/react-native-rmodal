@@ -13,25 +13,24 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity, Image,
+  TouchableOpacity, Image, ScrollView,
 } from 'react-native';
 
-// import RModal, { RModalParent} from "react-native-rmodal";
-// import { RModalConfig } from "react-native-rmodal/libs/util"
+// import RModal, { RModalParent, RModalConfig} from "react-native-rmodal";
 
-// import {RModalConfig} from './libs/util';
-// import RModal, { RModalParent, } from './libs';
+import RModal, { RModalParent, RModalConfig, } from './libs';
 
-import RModal, { RModalParent, RModalConfig, } from './src';
+// import RModal, { RModalParent, RModalConfig, } from './src';
 
 interface BtnProps {
   text: string;
+  theme: string;
   onPress: (n: any) => any;
 }
 
 const Btn = (props: BtnProps) => {
   return (
-    <TouchableOpacity style={styles.btn} onPress={props.onPress}>
+    <TouchableOpacity style={[styles.btn, props.theme === "dark" ? styles.btn_dark : null]} onPress={props.onPress}>
       <Text style={styles.btn_text}>{props.text}</Text>
     </TouchableOpacity>
   );
@@ -39,6 +38,7 @@ const Btn = (props: BtnProps) => {
 
 const App = () => {
   const [duration, setDuration] = useState(2000);
+  const [theme, setTheme] = useState("light");
 
   const setDefaultTime = () => {
     const t = duration === 2000 ? 5000 : 2000;
@@ -61,9 +61,7 @@ const App = () => {
       0,
       () => console.log('close modal'),
     );
-    setTimeout(() => {
-      RModalConfig.hide();
-    }, 2000);
+    setTimeout(RModal.hide, 2000);
   };
 
   const showSuccess = () => {
@@ -72,36 +70,13 @@ const App = () => {
 
   const showLoading = () => {
     RModal.loading();
-    setTimeout(() => {
-      RModalConfig.hide();
-    }, 2000);
+    setTimeout(RModal.hide, 2000);
   };
 
   const changeTheme = () => {
-    const colors = ['red', 'yellow', 'green', 'blue'];
-    const max = 3, min = 0;
-    const index = parseInt(`${Math.random()*(max-min+1)+min}`,10);
-    const color = colors[index];
-    RModalConfig.setModalStyle(StyleSheet.create({
-      rModal_info_text: {
-        color,
-      },
-      rModal_fail_text: {
-        color,
-      },
-      rModal_success_text: {
-        color,
-      },
-      rModal_loading_text: {
-        color,
-      },
-      rModal_actionSheet_cancel_text: {
-        color,
-      },
-      rModal_confirm_btn_ok_text: {
-        color,
-      },
-    }));
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+    RModalConfig.setModalStyle(newTheme === "dark" ? darkStyle : {});
   };
 
   const changeIcon = () => {
@@ -131,21 +106,32 @@ const App = () => {
     })
   };
 
+  const customModal = () => {
+    RModal.custom(
+      <View style={styles.custom_modal}><Text style={styles.custom_modal_text}>自定义组件</Text></View>,
+      0,
+      () => {console.warn(111)}
+    );
+    setTimeout(() => {
+      RModal.hide();
+    }, 2000);
+  };
+
   return (
     <RModalParent>
-      <View>
-        <Btn text={`设置弹窗时间为${duration === 2000 ? 5000 : 2000 }ms`} onPress={setDefaultTime} />
-        <Btn text="显示信息" onPress={showInfo} />
-        <Btn text="显示错误信息" onPress={showFail} />
-        <Btn text={`显示成功信息${duration}ms后消失`} onPress={showSuccess} />
-        <Btn text="显示加载中..." onPress={showLoading} />
-        <Btn text="修改主题" onPress={changeTheme} />
-        <Btn text="还原到上一次主题" onPress={RModalConfig.popModalStyle} />
-        <Btn text="修改错误信息的图标" onPress={changeIcon} />
-        <Btn text="重制设置" onPress={RModalConfig.resetSetting} />
-        <Btn text="Action Sheet" onPress={showActionSheet} />
-        <Btn text="Confirm" onPress={showConfirm} />
-      </View>
+      <ScrollView style={{flex: 1, backgroundColor: theme === "light" ? "#fff" : "#000"}}>
+        <Btn theme={theme} text={`设置弹窗时间为${duration === 2000 ? 5000 : 2000 }ms`} onPress={setDefaultTime} />
+        <Btn theme={theme} text="显示信息" onPress={showInfo} />
+        <Btn theme={theme} text="显示错误信息" onPress={showFail} />
+        <Btn theme={theme} text={`显示成功信息${duration}ms后消失`} onPress={showSuccess} />
+        <Btn theme={theme} text="显示加载中..." onPress={showLoading} />
+        <Btn theme={theme} text="切换主题" onPress={changeTheme} />
+        <Btn theme={theme} text="修改错误信息的图标" onPress={changeIcon} />
+        <Btn theme={theme} text="重制设置" onPress={RModalConfig.resetSetting} />
+        <Btn theme={theme} text="Action Sheet" onPress={showActionSheet} />
+        <Btn theme={theme} text="Confirm" onPress={showConfirm} />
+        <Btn theme={theme} text="自定义内容" onPress={customModal} />
+      </ScrollView>
     </RModalParent>
   );
 };
@@ -160,11 +146,45 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
   },
+  btn_dark: {
+    backgroundColor: '#8c8c8c',
+  },
   btn_text: {
     color: '#fff',
     fontSize: 16,
   },
+  custom_modal: {
+    backgroundColor: 'rgba(0,0,0, 1)',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: "50%",
+    marginLeft: -100,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 100,
+    width: 200,
+    height: 200,
+  },
+  custom_modal_text: {
+    color: 'red',
+    fontSize: 16,
+  },
 });
 
+const darkStyle = StyleSheet.create({
+  rModal_info_text: {
+    backgroundColor: '#f5f5f5',
+    color: "#000",
+  },
+  rModal_fail_container: {
+    backgroundColor: '#f5f5f5',
+  },
+  rModal_fail_text: {
+    color: "#000",
+  },
+});
 
 export default App;
