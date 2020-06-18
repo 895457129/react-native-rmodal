@@ -1,6 +1,6 @@
 {
   "name": "react-native-rmodal",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "react native 各种状态弹窗 ",
   "main": "libs/index.js",
   "scripts": {
@@ -68,7 +68,6 @@
   },
   "files": [
     "libs",
-    "assets",
     "README.md"
   ]
 }

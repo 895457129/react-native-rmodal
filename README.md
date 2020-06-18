@@ -2,7 +2,7 @@
   基于[react-native-root-siblings](https://www.npmjs.com/package/react-native-root-siblings)封装的弹窗组件。
   支持info、fail、success、confirm、loading、actionSheet和自定义弹窗，支持样式自定义。
   
-![示例](./ypx15-izkn3.gif)
+![示例](https://s1.ax1x.com/2020/06/18/NmDQzR.gif)
 
 # 使用方式
 ```js
