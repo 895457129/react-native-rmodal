@@ -16,7 +16,6 @@ import {
   TouchableOpacity, Image, ScrollView,
 } from 'react-native';
 
-// import RModal, { RModalParent, RModalConfig} from "react-native-rmodal";
 
 import RModal, { RModalParent, RModalConfig, } from './libs';
 

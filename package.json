@@ -1,6 +1,6 @@
 {
   "name": "react-native-rmodal",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "description": "react native 各种状态弹窗 ",
   "main": "libs/index.js",
   "scripts": {
@@ -9,8 +9,7 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "postinstall": "./pre-publish.sh",
-    "build": "./pre-publish.sh"
+    "prepublish": "./pre-publish.sh"
   },
   "repository": {
     "type": "git",
@@ -28,14 +27,10 @@
   },
   "homepage": "https://github.com/895457129/react-native-rmodal#readme",
   "peerDependencies": {
-    "react": "^16.9",
-    "react-native": ">=0.59 <0.62",
+    "react-native": ">=0.59",
     "react-native-root-siblings": "^4.0.6"
   },
   "dependencies": {
-    "react": "16.11.0",
-    "react-native": "0.62.2",
-    "react-native-rmodal": "^0.0.3",
     "react-native-root-siblings": "^4.0.6"
   },
   "devDependencies": {
@@ -48,6 +43,8 @@
     "@typescript-eslint/eslint-plugin": "^2.27.0",
     "@typescript-eslint/parser": "^2.27.0",
     "babel-jest": "^24.9.0",
+    "react": "16.11.0",
+    "react-native": "0.62.2",
     "eslint": "^6.5.1",
     "jest": "^24.9.0",
     "metro-react-native-babel-preset": "^0.58.0",
