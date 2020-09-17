@@ -13,13 +13,15 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity, Image, ScrollView,
+  TouchableOpacity, Image, ScrollView,PixelRatio,
 } from 'react-native';
 
 
-import RModal, { RModalParent, RModalConfig, } from './libs';
+// import RModal, { RModalParent, RModalConfig, } from './libs';
 
-// import RModal, { RModalParent, RModalConfig, } from './src';
+import RModal, { RModalParent, RModalConfig, } from './src';
+
+console.warn(PixelRatio.get(),PixelRatio.getPixelSizeForLayoutSize(200));
 
 interface BtnProps {
   text: string;
@@ -47,16 +49,27 @@ const App = () => {
 
 
   const showInfo = () => {
+    // RModal.info(
+    //   '这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题',
+    //   2000,
+    //   () => console.log('close modal 1'),
+    // );
+    // RModal.info(
+    //   '这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题1',
+    // );
+    // RModal.info(
+    //   '这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题2',
+    //   2000,
+    // );
     RModal.info(
-      '这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题',
-      2000,
-      () => console.log('close modal 1'),
+      '这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题3',
+      () => console.warn('close modal 1'),
     );
   };
 
   const showFail = () => {
     RModal.fail(
-      '网络错误！',
+      '这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题这是一段很长的问题！',
       0,
       () => console.log('close modal'),
     );
@@ -91,8 +104,8 @@ const App = () => {
       onCancel: () => console.warn("点击取消"),
       cancelText: "Cancel",
       titleText: "选择角色",
-      onItemClick: (text) => {
-        console.warn("index", text);
+      onItemClick: (text, index) => {
+        console.warn("index", text, index);
       },
     })
   };

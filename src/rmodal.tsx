@@ -13,7 +13,7 @@ interface ActionSheetProps {
   titleText?: string,
   onCancel?: () => void,
   cancelText: string,
-  onItemClick: (text: string) => void,
+  onItemClick: (text?: string, index?: number) => void,
 }
 
 interface ConfirmViewProps {
@@ -24,40 +24,109 @@ interface ConfirmViewProps {
   onOk: () => void,
 }
 
+function info(desc: string, callBack?: Callback): void;
+function info(desc: string, duration?: number, callBack?: Callback): void;
+function info(desc: string, ...resetParams: any) {
+  const view = new RootSiblings(<InfoView text={desc} />);
+  let duration = RModalConfig.getDefaultDuration();
+  let callBack = () => {};
+  if (resetParams.length === 0) {
+    RModalConfig.setModalHandler(view, duration, callBack);
+  }
+  if (resetParams.length === 1 && typeof resetParams[0] === 'number') {
+    RModalConfig.setModalHandler(view, resetParams[0]);
+  }
+  if (resetParams.length === 1 && typeof resetParams[0] === 'function') {
+    RModalConfig.setModalHandler(view, duration, resetParams[0]);
+  }
+  if (resetParams.length === 2) {
+    RModalConfig.setModalHandler(view, resetParams[0], resetParams[1]);
+  }
+}
+
+function fail(desc: string, callBack?: Callback): void;
+function fail(desc: string, duration?: number, callBack?: Callback): void;
+function fail(desc: string, ...resetParams: any) {
+  const view = new RootSiblings(<FailView text={desc} />);
+  let duration = RModalConfig.getDefaultDuration();
+  let callBack = () => {};
+  if (resetParams.length === 0) {
+    RModalConfig.setModalHandler(view, duration, callBack);
+  }
+  if (resetParams.length === 1 && typeof resetParams[0] === 'number') {
+    RModalConfig.setModalHandler(view, resetParams[0]);
+  }
+  if (resetParams.length === 1 && typeof resetParams[0] === 'function') {
+    RModalConfig.setModalHandler(view, duration, resetParams[0]);
+  }
+  if (resetParams.length === 2) {
+    RModalConfig.setModalHandler(view, resetParams[0], resetParams[1]);
+  }
+}
+
+function success(desc: string, callBack?: Callback): void;
+function success(desc: string, duration?: number, callBack?: Callback): void;
+function success(desc: string, ...resetParams: any) {
+  const view = new RootSiblings(<SuccessView text={desc} />);
+  let duration = RModalConfig.getDefaultDuration();
+  let callBack = () => {};
+  if (resetParams.length === 0) {
+    RModalConfig.setModalHandler(view, duration, callBack);
+  }
+  if (resetParams.length === 1 && typeof resetParams[0] === 'number') {
+    RModalConfig.setModalHandler(view, resetParams[0]);
+  }
+  if (resetParams.length === 1 && typeof resetParams[0] === 'function') {
+    RModalConfig.setModalHandler(view, duration, resetParams[0]);
+  }
+  if (resetParams.length === 2) {
+    RModalConfig.setModalHandler(view, resetParams[0], resetParams[1]);
+  }
+}
+
+
+function custom(Component: React.ReactElement, callBack?: Callback): void;
+function custom(Component: React.ReactElement, duration?: number, callBack?: Callback): void;
+function custom(Component: React.ReactElement, ...resetParams: any) {
+  const view = new RootSiblings(Component);
+  let duration = RModalConfig.getDefaultDuration();
+  let callBack = () => {};
+  if (resetParams.length === 0) {
+    RModalConfig.setModalHandler(view, duration, callBack);
+  }
+  if (resetParams.length === 1 && typeof resetParams[0] === 'number') {
+    RModalConfig.setModalHandler(view, resetParams[0]);
+  }
+  if (resetParams.length === 1 && typeof resetParams[0] === 'function') {
+    RModalConfig.setModalHandler(view, duration, resetParams[0]);
+  }
+  if (resetParams.length === 2) {
+    RModalConfig.setModalHandler(view, resetParams[0], resetParams[1]);
+  }
+}
+
 export default class RModal {
   static hide = RModalConfig.hide;
 
-  static info(desc: string, duration?: number, callBack?: Callback): void {
-    const view = new RootSiblings(<InfoView text={desc} />);
-    RModalConfig.setModalHandler(view, duration, callBack);
-  }
+  static info = info;
 
-  static fail(desc: string, duration?: number, callBack?: Callback): void {
-    const view = new RootSiblings(<FailView text={desc} />);
-    RModalConfig.setModalHandler(view, duration, callBack);
-  }
+  static fail = fail;
 
-  static success(desc: string, duration?: number, callBack?: Callback): void {
-    const view = new RootSiblings(<SuccessView text={desc} />);
-    RModalConfig.setModalHandler(view, duration, callBack);
-  }
+  static success = success;
 
   static loading(): void {
     const view = new RootSiblings(<LoadingView />);
     RModalConfig.setModalHandler(view, 0);
   }
 
-  static custom(Component: React.ReactElement, duration?: number, callBack?: Callback): void {
-    const view = new RootSiblings(Component);
-    RModalConfig.setModalHandler(view, duration, callBack);
-  }
+  static custom = custom;
 
   static actionSheet(props: ActionSheetProps): void {
     const view = new RootSiblings(<ActionSheet
       items={props.items}
-      onItemClick={(text) => {
+      onItemClick={(text, index) => {
         RModalConfig.hide();
-        props.onItemClick(text);
+        props.onItemClick(text, index);
       }}
       cancelText={props.cancelText}
       onCancel={() => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, ActivityIndicator, TouchableOpacity, StatusBar, } from 'react-native';
+import { View, Text, StyleSheet, Image, ActivityIndicator, TouchableOpacity, PixelRatio, } from 'react-native';
 import { RModalConfig, } from "./util";
 
 const defaultFailImg = require('./images/fail.png');
@@ -29,7 +29,7 @@ export function FailView(props: ViewProps) {
             <Image source={failImg || defaultFailImg} style={[styles.rModal_fail_img, diyStyle.rModal_fail_img]} />
           )
         }
-        <Text style={[styles.rModal_fail_text, diyStyle.rModal_fail_text]} numberOfLines={1}>
+        <Text style={[styles.rModal_fail_text, diyStyle.rModal_fail_text]} numberOfLines={2}>
           {props.text}
         </Text>
       </View>
@@ -48,7 +48,7 @@ export function SuccessView(props: ViewProps) {
             <Image source={successImg || defaultSuccessImg} style={[styles.rModal_success_img, diyStyle.rModal_success_img]} />
           )
         }
-        <Text style={[styles.rModal_success_text, diyStyle.rModal_success_text]} numberOfLines={1}>
+        <Text style={[styles.rModal_success_text, diyStyle.rModal_success_text]} numberOfLines={2}>
           {props.text}
         </Text>
       </View>
@@ -71,7 +71,7 @@ export function LoadingView() {
             />
           )
         }
-        <Text style={[styles.rModal_loading_text, diyStyle.rModal_loading_text]} numberOfLines={1}>
+        <Text style={[styles.rModal_loading_text, diyStyle.rModal_loading_text]} numberOfLines={2}>
           加载中...
         </Text>
       </View>
@@ -84,11 +84,12 @@ interface ActionSheetProps {
   titleText?: string,
   onCancel?: () => void,
   cancelText: string,
-  onItemClick: (text: string) => void,
+  onItemClick: (text?: string, index?: number) => void,
 }
 
 interface ActionSheetItemProps {
   text: string,
+  noBorder: boolean,
   onClick: () => void,
 }
 
@@ -96,7 +97,7 @@ function ActionSheetItem(props: ActionSheetItemProps) {
   const diyStyle  = RModalConfig.getModalStyle();
   return (
     <TouchableOpacity
-      style={[styles.rModal_actionSheet_item, diyStyle.rModal_actionSheet_item]}
+      style={[styles.rModal_actionSheet_item, diyStyle.rModal_actionSheet_item, props.noBorder ? commonStyle.rModal_common_noBorder : null,]}
       activeOpacity={.7}
       onPress={() => props.onClick()}
     >
@@ -107,6 +108,7 @@ function ActionSheetItem(props: ActionSheetItemProps) {
 
 export function ActionSheet(props: ActionSheetProps) {
   const diyStyle  = RModalConfig.getModalStyle();
+  const items = (props.items || []);
   return (
     <TouchableOpacity
       activeOpacity={1}
@@ -126,12 +128,13 @@ export function ActionSheet(props: ActionSheetProps) {
           )
         }
         {
-          (props.items || []).map((z) => {
+          items.map((z, i) => {
             return (
               <ActionSheetItem
                 text={z}
                 key={z}
-                onClick={() => props.onItemClick(z)}
+                noBorder={i + 1 === items.length}
+                onClick={() => props.onItemClick(z, i)}
               />);
           })
         }
@@ -190,6 +193,16 @@ export function ConfirmView(props: ConfirmViewProps) {
   );
 }
 
+const commonStyle = StyleSheet.create({
+  rModal_common_noBorder: {
+    borderWidth: 0,
+  },
+  rModal_common_border: {
+    width: PixelRatio.roundToNearestPixel(StyleSheet.hairlineWidth * 1.4),
+    color: '#797979',
+  },
+});
+
 const styles = StyleSheet.create({
   rModal_info_bg: {
     backgroundColor: 'transparent',
@@ -238,9 +251,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   rModal_fail_img: {
-    width: 30,
-    height: 30,
-    marginBottom: 6,
+    width: 32,
+    height: 32,
+    marginBottom: 10,
   },
   rModal_fail_text: {
     fontSize: 14,
@@ -270,9 +283,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   rModal_success_img: {
-    width: 30,
-    height: 30,
-    marginBottom: 6,
+    width: 32,
+    height: 32,
+    marginBottom: 10,
   },
   rModal_success_text: {
     fontSize: 14,
@@ -302,9 +315,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   rModal_loading_img: {
-    width: 30,
-    height: 30,
-    marginBottom: 6,
+    width: 32,
+    height: 32,
+    marginBottom: 10,
   },
   rModal_loading_text: {
     fontSize: 14,
@@ -328,42 +341,45 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   rModal_actionSheet_title: {
-    height: 55,
+    paddingTop: 16,
+    paddingBottom: 16,
     width: '100%',
-    backgroundColor: '#061619',
-    borderBottomColor: "#515151",
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    backgroundColor: '#fff',
+    borderBottomColor: commonStyle.rModal_common_border.color,
+    borderBottomWidth: commonStyle.rModal_common_border.width,
     justifyContent: 'center',
     alignItems: 'center',
   },
   rModal_actionSheet_title_text: {
     fontSize: 18,
-    color: '#a3a3a3',
+    fontWeight: "bold",
+    color: '#5b5b5b',
   },
   rModal_actionSheet_item: {
-    height: 50,
+    paddingTop: 14,
+    paddingBottom: 14,
     width: '100%',
-    backgroundColor: '#061619',
-    borderBottomColor: "#515151",
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    backgroundColor: '#fff',
+    borderBottomColor: commonStyle.rModal_common_border.color,
+    borderBottomWidth: commonStyle.rModal_common_border.width,
     justifyContent: 'center',
     alignItems: 'center',
   },
   rModal_actionSheet_item_text: {
-    fontSize: 16,
-    color: '#a3a3a3',
+    fontSize: 17,
+    color: '#4a4a4a',
   },
   rModal_actionSheet_cancel: {
     marginTop: 8,
     height: 50,
     width: '100%',
-    backgroundColor: '#061619',
+    backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
   },
   rModal_actionSheet_cancel_text: {
-    fontSize: 16,
-    color: '#a3a3a3',
+    fontSize: 17,
+    color: '#848484',
   },
   rModal_confirm_bg: {
     backgroundColor: 'rgba(0,0,0, .35)',
@@ -380,21 +396,21 @@ const styles = StyleSheet.create({
   rModal_confirm_container: {
     width: 240,
     height: 140,
-    backgroundColor: "#0a252a",
-    borderRadius: 4,
+    backgroundColor: "#fff",
+    borderRadius: 6,
     overflow: 'hidden',
   },
   rModal_confirm_titleBox: {
     width: '100%',
-    height: 90,
+    height: 100,
     justifyContent: 'center',
     alignItems: 'center',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#5e5e5e',
+    borderBottomColor: commonStyle.rModal_common_border.color,
+    borderBottomWidth: commonStyle.rModal_common_border.width,
     padding: 20,
   },
   rModal_confirm_titleBox_title: {
-    color: '#ffffff',
+    color: '#3d3d3d',
     fontSize: 16,
     lineHeight: 22,
     letterSpacing: 1,
@@ -412,19 +428,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   rModal_confirm_btn_cancel_text: {
-    fontSize: 14,
-    color: '#a3a3a3'
+    fontSize: 16,
+    color: '#a3a3a3',
+    letterSpacing: 1,
   },
   rModal_confirm_btn_ok: {
     height: '100%',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    borderLeftWidth: StyleSheet.hairlineWidth,
-    borderLeftColor: '#5e5e5e'
+    borderLeftColor: commonStyle.rModal_common_border.color,
+    borderLeftWidth: commonStyle.rModal_common_border.width,
   },
   rModal_confirm_btn_ok_text: {
-    fontSize: 14,
-    color: '#8ae6ef'
+    fontSize: 16,
+    color: '#141414',
+    letterSpacing: 1,
   },
 });
