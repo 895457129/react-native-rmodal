@@ -98,7 +98,7 @@ function ActionSheetItem(props: ActionSheetItemProps) {
   return (
     <TouchableOpacity
       style={[styles.rModal_actionSheet_item, diyStyle.rModal_actionSheet_item, props.noBorder ? commonStyle.rModal_common_noBorder : null,]}
-      activeOpacity={.7}
+      activeOpacity={.95}
       onPress={() => props.onClick()}
     >
       <Text style={[styles.rModal_actionSheet_item_text, diyStyle.rModal_actionSheet_item_text]}>{props.text}</Text>
@@ -174,14 +174,14 @@ export function ConfirmView(props: ConfirmViewProps) {
         </TouchableOpacity>
         <View style={[styles.rModal_confirm_btnBox, diyStyle.rModal_confirm_btnBox]}>
           <TouchableOpacity
-            activeOpacity={.7}
+            activeOpacity={.8}
             style={[styles.rModal_confirm_btn_cancel, diyStyle.rModal_confirm_btn_cancel]}
             onPress={props.onCancel}
           >
             <Text style={[styles.rModal_confirm_btn_cancel_text, diyStyle.rModal_confirm_btn_cancel_text]}>{props.cancelText || '取消'}</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            activeOpacity={.7}
+            activeOpacity={.8}
             style={[styles.rModal_confirm_btn_ok, diyStyle.rModal_confirm_btn_ok]}
             onPress={props.onOk}
           >
@@ -198,8 +198,8 @@ const commonStyle = StyleSheet.create({
     borderWidth: 0,
   },
   rModal_common_border: {
-    width: PixelRatio.roundToNearestPixel(StyleSheet.hairlineWidth * 1.4),
-    color: '#797979',
+    width: PixelRatio.roundToNearestPixel(StyleSheet.hairlineWidth * 1.8),
+    color: '#dcdcdc',
   },
 });
 
